@@ -10,7 +10,7 @@ COPY package.json /app/package.json
 COPY package-lock.json /app/package-lock.json
 
 # npm を使って依存関係をインストール
-RUN npm install --production
+RUN npm install
 
 # ホストのファイルをコンテナにコピー
 COPY . /app
