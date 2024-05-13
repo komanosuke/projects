@@ -1,0 +1,4 @@
+<p>こんにちは<%= @user.email %>様</p>
+<p>この度はPortfolioに登録いただきありがとうございます。</p>
+<p>つきましては、下記リンクをクリックしてアカウントを有効化してください。</p>
+<a href="<%= "#{@frontend_url}/users/activate/#{@user.activation_token}?email=#{CGI::escape(@user.email)}" %>">アカウントを有効化する</a>

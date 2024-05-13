@@ -1,0 +1,51 @@
+@charset "utf-8";
+
+#media-main {
+    background-image: url("~@/assets/images/ai_space.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#media-back-cover {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+}
+
+#media-con {
+    position: relative;
+}
+
+#media-main h1, .color-white {
+    color: #fff;
+}
+
+.media-wrapper p {
+    white-space: unset !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis !important;
+}
+
+.page a, .next a, .last a, .prev a, .first a {
+    color: #fff !important;
+}
+
+.current {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 25px;
+    color: indianred;
+}
+
+.next a, .prev a {
+    margin: 15px;
+}
+
+
+
+@media screen and (max-width:750px) {
+    
+}
