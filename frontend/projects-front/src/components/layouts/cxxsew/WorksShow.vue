@@ -17,15 +17,15 @@
         <p class="anno none">※ 注文時に、自分へのメッセージとして「人生の目的」または「直近の目標」のご記入をおすすめしています。メッセージはタグにプリントされます。</p> -->
         <form @submit.prevent="addToCart(work, 1)">
             <button v-if="work.status === 'soldout'" class="btn" id="soldout" disabled>SOLD OUT</button>
-            <button v-else-if="work.onlyone" class="btn" id="soldout" :disabled="work.onlyone">選択済み</button>
+            <button v-else-if="work.onlyone || isWorkInCart(work.id)" class="btn" id="soldout" disabled>選択済み</button>
             <button v-else class="btn" id="submit-btn">カートに追加</button>
         </form>
     </div>
     <div class="selected-container" id="cart-container">
-        <p v-if="!cartWorks" class="total">現在、カートは空です。</p>
+        <p v-if="cartWorks.length == 0" class="total">現在、カートは空です。</p>
         <template v-else>
             <p class="total">カート状況</p>
-            <p>{{ cartWorks.length }}点の商品が選択されています。</p>
+            <p>{{ totalQuantity }}点の商品が選択されています。</p>
             <div v-for="cartWork in cartWorks" :key="cartWork.id" class="inner-container cart-inner">
                 <div class="selected-item">
                     <div class="selected-wrapper">
@@ -33,6 +33,7 @@
                         <div>
                         <p>title: {{ cartWork.title }}</p>
                         <p>price: {{ cartWork.price.toLocaleString() }}</p>
+                        <p>数量: <input type="number" class="item-quantity" min="0" max="20" :value="cartWork.quantity" @change="handleQuantityInput(cartWork, $event)"> 点</p>
                         </div>
                         <img :src="imageUrl(cartWork.image.url)" :alt="''"/>
                     </div>
@@ -89,8 +90,51 @@ export default defineComponent({
                 return total + (work.price * work.quantity); // 価格と数量を掛けて合計に加算
             }, 0); // 初期値は0    
         },
+        totalQuantity(): number {
+            return this.cartWorks.reduce((sum, item) => {
+                return sum + item.quantity;
+            }, 0);
+        },
     },
     methods: {
+        isWorkInCart(workId: number) {
+            return this.cartWorks.some(cartWork => cartWork.id === workId);
+        },
+        handleQuantityInput(cartWork: CartWork, event: Event) {
+            const min = 1;
+            const max = 20;
+
+            // イベントターゲットがHTMLInputElementであることを確認
+            const target = event.target as HTMLInputElement | null;
+
+            if (target === null) {
+                return;
+            }
+
+            let quantity = parseInt(target.value, 10);
+
+            if (isNaN(quantity) || quantity < min) {
+                alert(`最小値は${min}です。`);
+                quantity = min;
+            } else if (quantity > max) {
+                alert(`最大値は${max}です。`);
+                quantity = max;
+            }
+
+            
+            cartWork.quantity = quantity;
+            target.value = quantity.toString();
+            // cartWorks配列を新しい配列で置き換える
+            this.cartWorks = [...this.cartWorks];
+
+            if (this.$isLoggedIn()) {
+                this.updateCartWorkQuantity(cartWork.cart_work_id, quantity)
+            } else {
+                // ローカルストレージを更新
+                const cart = this.cartWorks;
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        },
         async fetchWorks() {
             try {
                 const response = await this.$api.get<Work[]>('/works');
@@ -115,7 +159,6 @@ export default defineComponent({
                     }
                 });
                 this.cartWorks = response.data;
-                console.log(this.cartWorks);
             } catch (error) {
                 console.error(error);
             }
@@ -176,30 +219,25 @@ export default defineComponent({
         addProductToLocalCart(work: Work, quantity: number) {
             const cartStr = localStorage.getItem('cart');
             let cart = cartStr ? JSON.parse(cartStr) : []; // cartStrがnullでない場合のみJSON.parseを実行
-            let found = cart.find((item: any) => item.id === work.id);
 
-            if (found) {
-                found.quantity += quantity;
-            } else {
-                // 最後のカートアイテムのIDから次のIDを生成
-                const lastItem = cart[cart.length - 1];
-                const nextCartWorkId = lastItem ? lastItem.cartWorkId + 1 : 1;  // カートが空の場合は1から開始
+            // 最後のカートアイテムのIDから次のIDを生成
+            const lastItem = cart[cart.length - 1];
+            const nextCartWorkId = lastItem ? lastItem.cartWorkId + 1 : 1;  // カートが空の場合は1から開始
 
-                let newItem: CartWork = {
-                    id: work.id,
-                    work_cat_id: work.work_cat_id,
-                    title: work.title,
-                    image: work.image,
-                    price: work.price,
-                    text: work.text,
-                    onlyone: work.onlyone,
-                    status: work.status,
-                    cart_work_id: nextCartWorkId,
-                    quantity: quantity,
-                };
-                cart.push(newItem);
-                this.cartWorks = cart;
-            }
+            let newItem: CartWork = {
+                id: work.id,
+                work_cat_id: work.work_cat_id,
+                title: work.title,
+                image: work.image,
+                price: work.price,
+                text: work.text,
+                onlyone: work.onlyone,
+                status: work.status,
+                cart_work_id: nextCartWorkId,
+                quantity: quantity,
+            };
+            cart.push(newItem);
+            this.cartWorks = cart;
             localStorage.setItem('cart', JSON.stringify(cart));
             console.log('ローカルカートに商品が追加されました');
         },

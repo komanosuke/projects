@@ -7,11 +7,11 @@
             <img src="@/assets/images/cart.png" alt="" />
             <p>Check your cart</p>
         </div>
-        <div v-if="!cartWorks">
+        <div v-if="cartWorks.length == 0">
             <p class="center">カートは空です。</p>
         </div>
         <div v-else>
-            <p>{{ cartWorks.length }}点の商品が選択されています。</p>
+            <p class="center">{{ totalQuantity }}点の商品が選択されています。</p>
             <div class="selected-container">
                 <div v-for="cartWork in cartWorks" :key="cartWork.id" class="inner-container">
                     <div class="selected-item">
@@ -21,7 +21,7 @@
                                     <p>title: {{ cartWork.title }}</p>
                                     <!-- <p>type: {{ cartWork.onlyone ? 'オリジナル（一点物）' : 'ノーマル' }}</p> -->
                                     <p>price: ¥{{ cartWork.price.toLocaleString() }}</p>
-                                    <p>message: なし</p>
+                                    <p>数量: <input type="number" class="item-quantity" min="0" max="20" :value="cartWork.quantity" @change="handleQuantityInput(cartWork, $event)"> 点</p>
                                 </div>
                                 <img :src="$baseURL + cartWork.image.url" alt="" />
                             </div>
@@ -76,8 +76,48 @@ export default defineComponent({
                 return total + (work.price * work.quantity); // 価格と数量を掛けて合計に加算
             }, 0); // 初期値は0
         },
+        totalQuantity(): number {
+            return this.cartWorks.reduce((sum, item) => {
+                return sum + item.quantity;
+            }, 0);
+        },
     },
     methods: {
+        handleQuantityInput(cartWork: CartWork, event: Event) {
+            const min = 1;
+            const max = 20;
+
+            // イベントターゲットがHTMLInputElementであることを確認
+            const target = event.target as HTMLInputElement | null;
+
+            if (target === null) {
+                return;
+            }
+
+            let quantity = parseInt(target.value, 10);
+
+            if (isNaN(quantity) || quantity < min) {
+                alert(`最小値は${min}です。`);
+                quantity = min;
+            } else if (quantity > max) {
+                alert(`最大値は${max}です。`);
+                quantity = max;
+            }
+
+            
+            cartWork.quantity = quantity;
+            target.value = quantity.toString();
+            // cartWorks配列を新しい配列で置き換える
+            this.cartWorks = [...this.cartWorks];
+
+            if (this.$isLoggedIn()) {
+                this.updateCartWorkQuantity(cartWork.cart_work_id, quantity)
+            } else {
+                // ローカルストレージを更新
+                const cart = this.cartWorks;
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        },
         async fetchCartWorks() {
             try {
                 const response = await this.$api.get<CartWork[]>('/cart_works', {
@@ -89,6 +129,21 @@ export default defineComponent({
                 console.log(this.cartWorks);
             } catch (error) {
                 console.error(error);
+            }
+        },
+        async updateCartWorkQuantity(cartWorkId: number, quantity: number) {
+            try {
+                const response = await this.$api.patch(`/cart_works/${cartWorkId}`, {
+                    quantity: quantity
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${this.$getAuthToken()}`
+                    }
+                });
+                console.log('カートの数量が更新されました:', response.data);
+                this.fetchCartWorks(); // サーバーのカートを更新後、再フェッチ
+            } catch (error) {
+                console.error('カートの数量更新エラー:', error);
             }
         },
         localCartWorks() {

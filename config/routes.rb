@@ -40,7 +40,7 @@ Rails.application.routes.draw do
       resources :news_cats
 
       # Shopping cart for works
-      resources :cart_works, only: [:create, :destroy, :index]
+      resources :cart_works, only: [:create, :update, :destroy, :index]
       post 'cart_works/sync', to: 'cart_works#sync'
       post 'cart_works/pay', to: 'cart_works#pay'
 

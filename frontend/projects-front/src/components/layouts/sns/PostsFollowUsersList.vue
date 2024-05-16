@@ -6,7 +6,7 @@
                     <div class="post-name-wrapper">
                         <img v-if="user.image_url" :src="$baseURL + user.image_url" class="sns-thumb" alt="">
                         <img v-else src="@/assets/images/noimage.jpg" class="sns-thumb" alt="">
-                        <p>{{ user.name }}</p>
+                        <p class="posts-user-name">{{ user.name }}</p>
                         <p>{{ user.username }}</p>
                     </div>
                 </a>

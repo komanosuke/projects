@@ -13,7 +13,7 @@
                     </div>
                 </div>
             </div>
-            <p class="left">{{ post.content }}</p>
+            <p class="left post-show-content">{{ post.content }}</p>
             <img v-if="post.image_url" :src="$baseURL + post.image_url" class="sns-post-img sns-show-img" alt="">
             <div class="like-com-wrapper">
                 <PostsLikes :isNotCurrentUserPost="post.user_id != currentUser.id" :postId="post.id" :initialLiked="post.initial_liked" :initialLikesCount="post.initial_likes_count" />
@@ -22,7 +22,7 @@
                 </div>
                 <div>{{ post.initial_comments_count }}</div>
             </div>
-            <p>コメントしてみる</p>
+            <p><strong>- コメントする -</strong></p>
             <form @submit.prevent="createComment">
                 <textarea v-model="commentContent" maxlength="200" placeholder="コメントを入力してください" required></textarea>
                 <button type="submit" class="sns-btn">コメント投稿する</button>
@@ -33,7 +33,7 @@
                     <a :href="`/posts/user_home/${comment.user_id}`" class="sns-users-link-comment">
                         <div class="post-name-wrapper">
                             <img :src="$baseURL + comment.user_image_url" class="sns-thumb" alt="">
-                            <p>{{ comment.user_name }}</p>
+                            <p class="posts-user-name">{{ comment.user_name }}</p>
                             <p>{{ comment.user_username }}</p>
                         </div>
                     </a>

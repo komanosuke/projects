@@ -224,11 +224,21 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: 100%;
+    width: auto;
+    font-size: 16px;
 }
 
 .posts-user-name {
-    width: 40% !important;
+    margin-right: 30px !important;
+}
+
+.post-show-content {
+    width: 430px;
+    margin: 30px auto 10px;
+}
+
+.thumb-wrapper form {
+    width: 30%;
 }
 
 #sns-show-post-name {
@@ -564,6 +574,10 @@
     .post-name-wrapper {
         display: flex;
         width: 100%;
+    }
+
+    .post-show-content {
+        width: 80%;
     }
 
     .posts-user-name {
