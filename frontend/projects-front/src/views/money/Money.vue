@@ -149,7 +149,7 @@
                         <td><span id="my_total">{{ totalLifeCost.toLocaleString() }}</span> 円</td>
                     </tr>
                 </table>
-                <p class="ex">※ 平均的な例を見ても {{ (-(averageTotalLifeIncome - averageLifeCost)).toLocaleString() }} 円の不足 → 貯蓄、年金、退職金で賄えるように調整が必要</p>
+                <p class="ex">※ 平均的な例を見ても不足 → 貯蓄、年金、退職金で賄えるように調整が必要</p>
                 <div class="decided-cost">生涯支出 ＝ <span class="red">{{ totalLifeCost.toLocaleString() }}</span>円</div>
             </div>
     
