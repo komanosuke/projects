@@ -8,7 +8,7 @@ Rails.application.configure do
   #   }
 
   # Forcing all access to the app over SSL
-  config.force_ssl = true
+  config.force_ssl = false
 
   # Setting up the mailer for error notifications
   config.action_mailer.delivery_method = :smtp
