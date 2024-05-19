@@ -6,7 +6,8 @@
             <p id="home-p">
                 ご訪問いただきありがとうございます。以下はご利用可能なサービスの一覧です。
             </p>
-            <p>ユーザー登録してログインすると、データ保存ができます。</p>
+            <p v-if="$isLoggedIn()" style="color: indianred;"><strong>ログイン中です。データの保存が可能です。</strong></p>
+            <p v-else>ユーザー登録してログインすると、データ保存ができます。</p>
             <div class="works pfs">
                 <div class="work pf" v-for="work in works" :key="work.id">
                     <a :href="work.link">

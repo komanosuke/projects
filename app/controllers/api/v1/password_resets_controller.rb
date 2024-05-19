@@ -5,7 +5,6 @@ class Api::V1::PasswordResetsController < ApplicationController
   end
 
   def create
-    p params[:email]
     @user = User.find_by(email: params[:email].downcase)
     if @user
       begin

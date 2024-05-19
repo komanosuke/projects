@@ -51,7 +51,8 @@ export default defineComponent({
     logout() {
       localStorage.removeItem('authToken');  // トークンをローカルストレージから削除
       this.isLoggedIn = false;
-      this.$router.push('/');
+      alert('ログアウトしました。');
+      window.location.href = '/';
     },
   }
 });

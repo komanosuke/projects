@@ -1,4 +1,7 @@
 <template>
+    <div id="overlay" v-if="overlay">
+        <div class="loader"></div>
+    </div>
     <div class="contents" id="sns-contents">
         <h1>- 新規投稿作成 -</h1>
         <form class="sns-form" @submit.prevent="createPost">
@@ -30,10 +33,12 @@ export default defineComponent({
             previewImageUrl: `${this.$baseURL}/images/noimage.jpg`,
             uploadedImage: null as File | null,
             message: '',
+            overlay: false,
         };
     },
     methods: {
         async createPost() {
+            this.overlay = true;
             const formData = new FormData();
             formData.append('post[content]', this.postContent);
             if (this.uploadedImage) {
@@ -52,6 +57,8 @@ export default defineComponent({
             } catch (error) {
                 console.error('Error creating post:', error);
                 this.message = '投稿作成に失敗しました。';
+            } finally {
+                this.overlay = false;
             }
         },
         showImageInput() {

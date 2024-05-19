@@ -1,6 +1,9 @@
 <template>
 <LoginHeader :show-login-btn="showLoginBtn"/>
 <main>
+    <div id="overlay" v-if="overlay">
+        <div class="loader"></div>
+    </div>
     <div v-if="$isLoggedIn()" class="contents">
         <h1>- ログインしています -</h1>
         <a href="/" class="btn block">トップページへ</a>
@@ -49,7 +52,7 @@ export default defineComponent({
                 guest: false,
             },
             showLoginBtn: false,
-            // alert: '<%= flash[:alert] %>'
+            overlay: false,
         }
     },
     components: {
@@ -61,11 +64,14 @@ export default defineComponent({
     },
     methods: {
         async login() {
+            this.overlay = true;
             try {
                 const response = await this.$api.post('/login', this.credentials);
                 await this.handleLoginSuccess(response.data.jwt);
             } catch (error) {
                 this.handleLoginError(error);
+            } finally {
+                this.overlay = false;
             }
         },
         async loginAsGuest() {
@@ -77,9 +83,17 @@ export default defineComponent({
             localStorage.setItem('authToken', token);
             this.$api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             await this.syncCartWithServer();
-            this.$router.push('/');
+            // リダイレクト先のパスを取得
+            const redirectPath = this.$route.query.redirect || '/';
+            // 指定されたパスにリダイレクト
+            if (redirectPath) {
+                this.$router.push(String(redirectPath));
+            } else {
+                this.$router.push('/');
+            }
         },
         handleLoginError(error: unknown) {
+            alert('ログインに失敗しました。パスワードが間違っているか、メールにてアカウントの有効化がされていない可能性があります。');
             if (error instanceof AxiosError) {
                 console.error('Request failed with status code:', error.response?.status);
             } else {

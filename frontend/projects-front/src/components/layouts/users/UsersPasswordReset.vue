@@ -1,4 +1,7 @@
 <template>
+    <div id="overlay" v-if="overlay">
+        <div class="loader"></div>
+    </div>
     <div class="contents" id="login-con">
         <h1>パスワード再設定フォーム</h1>
         <form @submit.prevent="passwordReset">
@@ -17,10 +20,12 @@
                     placeholder="新しいパスワードを入力してください"
                     required
                 >
-                <button type="submit" class="btn submit-btn">更新する</button>
+                <p v-if="!matchPassword" class="center">確認用パスワードが一致していません。</p>
+                <button type="submit" class="btn submit-btn" v-if="beforeSuccess">更新する</button>
+                <a href="/login" class="btn pf-submit" v-if="!beforeSuccess">ログイン画面へ</a>
             </div>
         </form>
-        <p v-if="message">{{ message }}</p>
+        <p v-if="message" class="center">{{ message }}</p>
     </div>
 </template>
 
@@ -37,14 +42,23 @@ export default defineComponent({
             message: '',
             password: '',
             passwordConfirmation: '',
+            overlay: false,
+            beforeSuccess: true,
         };
+    },
+    computed: {
+        matchPassword(): boolean {
+            if (this.password === this.passwordConfirmation) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     methods: {
         async passwordReset() {
+            this.overlay = true;
             const email = this.$route.query.email;
-
-            console.log('Token:', this.token);
-            console.log('Email:', email);
             
             try {
                 const response = await this.$api.patch(`/password_resets/${this.token}`, {
@@ -55,10 +69,13 @@ export default defineComponent({
                     },
                 });
                 console.log('Password reset successfully:', response);
-                this.message = 'パスワードが正常にリセットされました。';
+                this.message = 'パスワードが正常にリセットされました。新しいパスワードをお使いください。';
+                this.beforeSuccess = false;
             } catch (error) {
                 console.error('Error resetting password');
                 this.message = 'パスワードリセットに失敗しました。';
+            } finally {
+                this.overlay = false;
             }
         },
     },

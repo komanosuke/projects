@@ -1,16 +1,10 @@
 <template>
     <footer id="sns-footer">
         <div id="sns-footer-side">
-            <a href="/" id="ft-center">
+            <a href="/posts/index" id="ft-center">
                 <div>Designers SNS</div>
             </a>
             <p>- Anti Nihilism & Live Happy -</p>
-            <div class="help-wrapper">
-            <a href="/help">HELP</a>
-            <a href="/contact">CONTACT</a>
-            <a href="/policy">POLICY</a>
-            <a href="/terms">TERMS</a>
-            </div>
             <ul class="follow-links">
             <li class="follow-link">
                 <a href="https://twitter.com" target="_blank">

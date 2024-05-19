@@ -21,7 +21,7 @@
             <div v-else>
                 <!-- 一般ユーザーのログイン状態の条件分岐 -->
                 <div v-if="isLoggedIn" class="hd-side pink" @click="logout">Log out</div>
-                <a href="/login" v-else>
+                <a href="/login?redirect=/cxxsew/index" v-else>
                 <div class="hd-side pink">log in</div>
                 </a>
             </div>
@@ -90,7 +90,8 @@ export default defineComponent({
         logout() {
             localStorage.removeItem('authToken');  // トークンをローカルストレージから削除
             this.isLoggedIn = false;
-            this.$router.push('/');
+            alert('ログアウトしました。');
+            this.$router.push('/cxxsew/index');
         },
     },
 });

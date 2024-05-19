@@ -30,12 +30,12 @@
                 <a href="/cxxsew/purchase">カート内容を確認</a>
             </div>
         </div>
-        <div id="profile-study">
+        <!-- <div id="profile-study">
             <h2>学習記録</h2>
             <div class="btn sub-btn">
                 <a href="/education/collection">学習記録を見る</a>
             </div>
-        </div>
+        </div> -->
         <div id="profile-sns">
             <h2>投稿内容</h2>
             <div class="btn sub-btn">

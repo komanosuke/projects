@@ -1,7 +1,7 @@
 <template>
     <header>
         <div id="hd-flex" @click="toggleMenu">
-            <a href="/">
+            <a href="/posts/index">
                 <div class="hd-side pc sns-hd-side">home</div>
             </a>
             <div class="toggle-btn sp" id="sns-tgl">
@@ -18,7 +18,7 @@
             <div v-else>
                 <!-- 一般ユーザーのログイン状態の条件分岐 -->
                 <div v-if="isLoggedIn" class="hd-side sns-hd-side" @click="logout">Log out</div>
-                <a href="/login" v-else>
+                <a href="/login?redirect=/posts/index" v-else>
                     <div class="hd-side sns-hd-side">log in</div>
                 </a>
             </div>
@@ -70,7 +70,8 @@ export default defineComponent({
         logout() {
             localStorage.removeItem('authToken');  // トークンをローカルストレージから削除
             this.isLoggedIn = false;
-            this.$router.push('/');
+            alert('ログアウトしました。');
+            this.$router.push('/posts/index');
         },
     }
 });

@@ -1,5 +1,11 @@
 <template>
-    <LoginHeader/>
+    <header id="top-header">
+        <div id="hd-flex">
+            <a href="/mobile" class="pf-hd-center" id="hd-center" style="height:60px;">
+                <div>IoT Robot Status</div>
+            </a>
+        </div>
+    </header>
     <main id="socket-main">
         <div class="contents" id="socket-con">
             <h1>IoT機器操作アプリ</h1>
@@ -93,22 +99,44 @@
             </div>
         </div>
     </main>
-    <LoginFooter/>
+    <footer>
+        <a href="/mobile" id="ft-center">
+            <div>IoT Robot Status</div>
+        </a>
+        <p>- Anti Nihilism & Live Happy -</p>
+        <ul class="follow-links">
+        <li class="follow-link">
+            <a href="https://twitter.com" target="_blank">
+            <img src="@/assets/svg/twitter_w.svg" alt="" class="icon" />
+            </a>
+        </li>
+        <li class="follow-link">
+            <a href="https://ja-jp.facebook.com" target="_blank">
+            <img src="@/assets/svg/facebook_w.svg" alt="" class="icon" />
+            </a>
+        </li>
+        <li class="follow-link">
+            <a href="https://www.instagram.com" target="_blank">
+            <img src="@/assets/svg/instagram_w.svg" alt="" class="icon" />
+            </a>
+        </li>
+        <li class="follow-link">
+            <a href="https://line.me" target="_blank">
+            <img src="@/assets/svg/line_w.svg" alt="" class="icon" />
+            </a>
+        </li>
+        </ul>
+        <small>(C) 2023 Liberal Earth All Rights Reserved.</small>
+    </footer>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import '@/assets/stylesheets/mobile/mobile.css';
-import LoginHeader from '../../components/layouts/login/LoginHeader.vue';
-import LoginFooter from '../../components/layouts/login/LoginFooter.vue';
 import Chart, { ChartConfiguration } from 'chart.js/auto';
 
 export default defineComponent({
     name: 'AppMobile',
-    components: {
-        LoginHeader,
-        LoginFooter,
-    },
     data() {
         return {
             user: {
