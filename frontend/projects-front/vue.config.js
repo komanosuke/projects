@@ -31,17 +31,8 @@ module.exports = defineConfig({
 //     },
 //     hot: false,  // ホットモジュールリプレースメントを無効にする
 //     liveReload: false,  // ライブリロードを無効にする
-//     proxy: {
-//       '/ws': {
-//         target: 'http://localhost:8080',
-//         ws: true,
-//         changeOrigin: true,
-//         secure: false,
-//         pathRewrite: { '^/ws': '' },
-//       },
-//     },
 //     client: {
-//       webSocketURL: 'wss://app.liberal-earth.com/ws',
+//       webSocketURL: undefined, // WebSocket URLを無効化
 //     },
 //   },
 //   transpileDependencies: true,
