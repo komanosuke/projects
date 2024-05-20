@@ -2,7 +2,6 @@
 * 以前ポートフォリオとして作成したwebアプリ群の一部をvue対応したものです。
 * URL: https://app.liberal-earth.com
 * アカウントを作成しなくても、ヘッダーの「log in」ボタンからログインページに移動後ゲストログインができます。メールアドレスの登録が必要ですが、アカウントの新規作成もできます。
-<img width="1008" alt="portfolio_top" src="https://github.com/komanosuke/portfolio/assets/54266017/a85854a5-2408-43de-b057-1870b64882b7">
 
 # 使用技術
 
