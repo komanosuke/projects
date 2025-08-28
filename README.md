@@ -1,6 +1,6 @@
 # projects ポートフォリオアプリケーション
 * 以前ポートフォリオとして作成したwebアプリ群の一部をvue対応したものです。
-* URL: https://liberal-earth-frontend.vercel.app （現在はVercelで稼働中）
+* URL: https://liberal-earth-frontend.vercel.app （現在停止しております）
 * アカウントを作成しなくても、ヘッダーの「log in」ボタンからログインページに移動後ゲストログインができます。メールアドレスの登録が必要ですが、アカウントの新規作成もできます。
 
 # 使用技術
